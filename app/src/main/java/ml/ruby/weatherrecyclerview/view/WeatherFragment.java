@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ import ml.ruby.weatherrecyclerview.model.weather.Daily;
 import ml.ruby.weatherrecyclerview.model.QueryParams;
 import ml.ruby.weatherrecyclerview.model.weather.WeatherBean;
 import ml.ruby.weatherrecyclerview.utils.Constants;
+import ml.ruby.weatherrecyclerview.utils.GetLanguage;
 import ml.ruby.weatherrecyclerview.viewmodel.WeatherFragmentViewModel;
 
 /**
@@ -37,16 +39,19 @@ public class WeatherFragment extends Fragment {
     private SwipeRefreshLayout refreshLayout;
     private static Handler handler = null;
     private WeatherFragmentViewModel weatherModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         weatherModel = new ViewModelProvider(this).get(WeatherFragmentViewModel.class);
         // TODO: We need get the lat, lon and lang from the GPS and device itself but not hard code
         weatherModel.getLocationLiveData().observe(this,
-                locationBean -> weatherModel.queryWeatherInfo(
-                        new QueryParams(String.valueOf(weatherModel.getLocationLiveData().getValue().getLatitude()),
-                                String.valueOf(weatherModel.getLocationLiveData().getValue().getLongitude()),
-                                "zh_cn")));
+                locationBean ->
+                        weatherModel.queryWeatherInfo(
+                                new QueryParams(String.valueOf(weatherModel.getLocationLiveData().getValue().getLatitude()),
+                                        String.valueOf(weatherModel.getLocationLiveData().getValue().getLongitude()),
+                                        GetLanguage.getLanguage()))
+        );
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -94,9 +99,9 @@ public class WeatherFragment extends Fragment {
                 getResources().getColor(R.color.red, getActivity().getTheme()),
                 getResources().getColor(R.color.yellow, getActivity().getTheme()),
                 getResources().getColor(R.color.green, getActivity().getTheme()));
-        refreshLayout.setOnRefreshListener(() ->{
-                weatherModel.updateLocation();
-                });
+        refreshLayout.setOnRefreshListener(() -> {
+            weatherModel.updateLocation();
+        });
     }
 
     @Nullable
