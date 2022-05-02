@@ -1,6 +1,6 @@
 package ml.ruby.weatherrecyclerview.api;
 
-import ml.ruby.weatherrecyclerview.model.WeatherBean;
+import ml.ruby.weatherrecyclerview.model.weather.WeatherBean;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

@@ -1,7 +1,12 @@
-package ml.ruby.weatherrecyclerview.model;
+package ml.ruby.weatherrecyclerview.model.weather;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
+
+import ml.ruby.weatherrecyclerview.model.weather.Current;
+import ml.ruby.weatherrecyclerview.model.weather.Daily;
+import ml.ruby.weatherrecyclerview.model.weather.Hourly;
+import ml.ruby.weatherrecyclerview.model.weather.Minutely;
 
 public class WeatherBean{
 

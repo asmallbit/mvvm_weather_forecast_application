@@ -1,6 +1,5 @@
 package ml.ruby.weatherrecyclerview.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ml.ruby.weatherrecyclerview.R;
-import ml.ruby.weatherrecyclerview.model.Daily;
+import ml.ruby.weatherrecyclerview.model.weather.Daily;
 import ml.ruby.weatherrecyclerview.utils.Constants;
 import ml.ruby.weatherrecyclerview.utils.NumberOperation;
 
@@ -42,7 +41,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
     @Override
     public void onBindViewHolder(@NonNull WeatherRecyclerViewAdapter.ViewHolder holder, int position) {
         Daily daily = weatherBeanList.get(position);
-        Date date = new Date(daily.getSunrise() * 1000);
+        Date date = new Date(daily.getSunrise() * 1000L);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         holder.dayOfWeek.setText(days[calendar.get(Calendar.DAY_OF_WEEK) - 1]);

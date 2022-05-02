@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 
 import androidx.lifecycle.MutableLiveData;
 import ml.ruby.weatherrecyclerview.MainActivity;
-import ml.ruby.weatherrecyclerview.model.WeatherBean;
+import ml.ruby.weatherrecyclerview.model.weather.WeatherBean;
 import ml.ruby.weatherrecyclerview.depencyInject.RetrofitClient;
 import ml.ruby.weatherrecyclerview.utils.Constants;
 import ml.ruby.weatherrecyclerview.view.WeatherFragment;

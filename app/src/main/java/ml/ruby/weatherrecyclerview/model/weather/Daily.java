@@ -1,21 +1,30 @@
-package ml.ruby.weatherrecyclerview.model;
+package ml.ruby.weatherrecyclerview.model.weather;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class Current{
+public class Daily {
+
+	@SerializedName("moonset")
+	private int moonset;
+
+	@SerializedName("rain")
+	private double rain;
 
 	@SerializedName("sunrise")
 	private int sunrise;
 
 	@SerializedName("temp")
-	private double temp;
+	private Temp temp;
 
-	@SerializedName("visibility")
-	private int visibility;
+	@SerializedName("moon_phase")
+	private double moonPhase;
 
 	@SerializedName("uvi")
 	private double uvi;
+
+	@SerializedName("moonrise")
+	private int moonrise;
 
 	@SerializedName("pressure")
 	private int pressure;
@@ -24,13 +33,16 @@ public class Current{
 	private int clouds;
 
 	@SerializedName("feels_like")
-	private double feelsLike;
+	private FeelsLike feelsLike;
 
 	@SerializedName("wind_gust")
 	private double windGust;
 
 	@SerializedName("dt")
 	private int dt;
+
+	@SerializedName("pop")
+	private double pop;
 
 	@SerializedName("wind_deg")
 	private int windDeg;
@@ -50,6 +62,22 @@ public class Current{
 	@SerializedName("wind_speed")
 	private double windSpeed;
 
+	public void setMoonset(int moonset){
+		this.moonset = moonset;
+	}
+
+	public int getMoonset(){
+		return moonset;
+	}
+
+	public void setRain(double rain){
+		this.rain = rain;
+	}
+
+	public double getRain(){
+		return rain;
+	}
+
 	public void setSunrise(int sunrise){
 		this.sunrise = sunrise;
 	}
@@ -58,20 +86,20 @@ public class Current{
 		return sunrise;
 	}
 
-	public void setTemp(double temp){
+	public void setTemp(Temp temp){
 		this.temp = temp;
 	}
 
-	public double getTemp(){
+	public Temp getTemp(){
 		return temp;
 	}
 
-	public void setVisibility(int visibility){
-		this.visibility = visibility;
+	public void setMoonPhase(double moonPhase){
+		this.moonPhase = moonPhase;
 	}
 
-	public int getVisibility(){
-		return visibility;
+	public double getMoonPhase(){
+		return moonPhase;
 	}
 
 	public void setUvi(double uvi){
@@ -80,6 +108,14 @@ public class Current{
 
 	public double getUvi(){
 		return uvi;
+	}
+
+	public void setMoonrise(int moonrise){
+		this.moonrise = moonrise;
+	}
+
+	public int getMoonrise(){
+		return moonrise;
 	}
 
 	public void setPressure(int pressure){
@@ -98,11 +134,11 @@ public class Current{
 		return clouds;
 	}
 
-	public void setFeelsLike(double feelsLike){
+	public void setFeelsLike(FeelsLike feelsLike){
 		this.feelsLike = feelsLike;
 	}
 
-	public double getFeelsLike(){
+	public FeelsLike getFeelsLike(){
 		return feelsLike;
 	}
 
@@ -120,6 +156,14 @@ public class Current{
 
 	public int getDt(){
 		return dt;
+	}
+
+	public void setPop(double pop){
+		this.pop = pop;
+	}
+
+	public double getPop(){
+		return pop;
 	}
 
 	public void setWindDeg(int windDeg){

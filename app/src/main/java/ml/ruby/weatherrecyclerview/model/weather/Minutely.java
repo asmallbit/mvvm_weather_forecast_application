@@ -1,4 +1,4 @@
-package ml.ruby.weatherrecyclerview.model;
+package ml.ruby.weatherrecyclerview.model.weather;
 
 import com.google.gson.annotations.SerializedName;
 

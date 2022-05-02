@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ml.ruby.weatherrecyclerview.R;
 import ml.ruby.weatherrecyclerview.adapter.WeatherRecyclerViewAdapter;
-import ml.ruby.weatherrecyclerview.model.Daily;
+import ml.ruby.weatherrecyclerview.model.weather.Daily;
 import ml.ruby.weatherrecyclerview.model.QueryParams;
-import ml.ruby.weatherrecyclerview.model.WeatherBean;
+import ml.ruby.weatherrecyclerview.model.weather.WeatherBean;
 import ml.ruby.weatherrecyclerview.utils.Constants;
 import ml.ruby.weatherrecyclerview.viewmodel.WeatherFragmentViewModel;
 
@@ -36,10 +36,17 @@ public class WeatherFragment extends Fragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private static Handler handler = null;
-
+    private WeatherFragmentViewModel weatherModel;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        weatherModel = new ViewModelProvider(this).get(WeatherFragmentViewModel.class);
+        // TODO: We need get the lat, lon and lang from the GPS and device itself but not hard code
+        weatherModel.getLocationLiveData().observe(this,
+                locationBean -> weatherModel.queryWeatherInfo(
+                        new QueryParams(String.valueOf(weatherModel.getLocationLiveData().getValue().getLatitude()),
+                                String.valueOf(weatherModel.getLocationLiveData().getValue().getLongitude()),
+                                "zh_cn")));
         handler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -60,7 +67,6 @@ public class WeatherFragment extends Fragment {
     public void onStart() {
         super.onStart();
         // Get the ViewModel instance
-        WeatherFragmentViewModel model = new ViewModelProvider(this).get(WeatherFragmentViewModel.class);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         List<Daily> dailyList = new ArrayList<>();
         WeatherRecyclerViewAdapter adapter = new WeatherRecyclerViewAdapter(dailyList);
@@ -68,14 +74,13 @@ public class WeatherFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Do a request when the user launcher the application
-        // TODO: We need get the lat, lon and lang from the GPS and device itself but not hard code
-        model.queryWeatherInfo(new QueryParams("30.98", "115.89", "zh_cn"));
+        weatherModel.updateLocation();
 
         // Set a observer to observe the weather info
-        model.getWeatherLiveData().observe(WeatherFragment.this, weatherBean -> {
+        weatherModel.getWeatherLiveData().observe(WeatherFragment.this, weatherBean -> {
             // We will notify the adapter when the user make a new request successfully
             new Thread(() -> {
-                WeatherBean value = model.getWeatherLiveData().getValue();
+                WeatherBean value = weatherModel.getWeatherLiveData().getValue();
                 if (value != null) {
                     List<Daily> dailies = value.getDaily();
                     dailyList.clear();
@@ -85,9 +90,13 @@ public class WeatherFragment extends Fragment {
             }).start();
         });
 
-        // TODO: We need get the lat, lon and lang from the GPS and device itself but not hard code
-        refreshLayout.setOnRefreshListener(() ->
-                model.queryWeatherInfo(new QueryParams("30.98", "115.89", "zh_cn")));
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue, getActivity().getTheme()),
+                getResources().getColor(R.color.red, getActivity().getTheme()),
+                getResources().getColor(R.color.yellow, getActivity().getTheme()),
+                getResources().getColor(R.color.green, getActivity().getTheme()));
+        refreshLayout.setOnRefreshListener(() ->{
+                weatherModel.updateLocation();
+                });
     }
 
     @Nullable
@@ -99,4 +108,5 @@ public class WeatherFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_data);
         return view;
     }
+
 }
